@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, FlatList, Image, TouchableWithoutFeedback } from 'react-native';
-import { FontAwesome, Ionicons } from 'react-native-vector-icons';
 import Colors from '../../shared/colors';
-import { useNavigation } from '@react-navigation/native';
-import ProductList, { data, itemCount, totalTonkho } from '../Products/ProductListComponent';
+import ProductList, { data } from '../Products/ProductList';
+import styles from '../../components/styleSelling';
 
 type DataSellingItem = {
+  idHD: string;
   id: string;
   soluongban: number;
+  tong: number;
   name?: string;
   tonkho?: number;
   giaban?: number;
@@ -17,15 +18,15 @@ type DataSellingItem = {
 
   // Danh sách dữ liệu mẫu, có lẽ cần tạo một bảng chỉ cần 2 cái này thôi, mấy cái thông tin khác của sản phẩm tôi lấy từ bên ProductListComponet.tsx
   const dataSelling: DataSellingItem[] = [
-    { id: 'SP000002', soluongban:2 },
-    { id: 'SP000003', soluongban:2 },
-    { id: 'SP000004', soluongban:2 },
-    { id: 'SP000005', soluongban:2 },
-    { id: 'SP000006', soluongban:2 },
-    { id: 'SP000007', soluongban:2 },
-    { id: 'SP000008', soluongban:2 },
-    { id: 'SP000009', soluongban:2 },
-    { id: 'SP000010', soluongban:2 },
+    { idHD: 'HD000002',id: 'SP000002', soluongban:0, tong:0 },
+    { idHD: 'HD000002',id: 'SP000003', soluongban:3, tong:0 },
+    { idHD: 'HD000002',id: 'SP000004', soluongban:2, tong:0 },
+    { idHD: 'HD000002',id: 'SP000005', soluongban:5, tong:0 },
+    { idHD: 'HD000002',id: 'SP000006', soluongban:1, tong:0 },
+    { idHD: 'HD000002',id: 'SP000007', soluongban:2, tong:0 },
+    { idHD: 'HD000002',id: 'SP000008', soluongban:4, tong:0 },
+    { idHD: 'HD000002',id: 'SP000009', soluongban:7, tong:0 },
+    { idHD: 'HD000002',id: 'SP000010', soluongban:1, tong:0 },
   ];
 
   // Lặp qua từng phần tử trong dataSelling
@@ -42,16 +43,23 @@ for (let i = 0; i < dataSelling.length; i++) {
     dataSelling[i].giaban = foundProduct.giaban;
     dataSelling[i].giagoc = foundProduct.giagoc;
     dataSelling[i].image = foundProduct.image;
+    dataSelling[i].tong = dataSelling[i].giaban*dataSelling[i].soluongban;
   }
 }
-  
 
-interface SellingProductComponent {
+var totalAmount = 0;
+  // Lặp qua từng phần tử trong dataSelling
+  for (let i = 0; i < dataSelling.length; i++) {
+    totalAmount = totalAmount+dataSelling[i].tong;
+
+  }
+
+interface SellingProduct {
   data: DataSellingItem[];
   onProductPress: (product: DataSellingItem) => void;
 }
 
-const SellingProductComponent: React.FC<SellingProductComponent> = ({ data, onProductPress }) => {
+const SellingProduct: React.FC<SellingProduct> = ({ data, onProductPress }) => {
   const renderFooter = () => {
     return (
       <View style={{ height: 100, backgroundColor: 'white' }} />
@@ -81,7 +89,7 @@ const SellingProductComponent: React.FC<SellingProductComponent> = ({ data, onPr
               </View>
             </View>
             <View style={[styles.column, { alignItems: 'flex-end' }]}>
-              <Text style={[styles.itemText, {color: Colors.blue}]}>{item.giaban*item.soluongban}</Text>
+              <Text style={[styles.itemText, {color: Colors.blue}]}>{item.tong}</Text>
             </View>
           </View>
         </View>
@@ -100,55 +108,6 @@ const SellingProductComponent: React.FC<SellingProductComponent> = ({ data, onPr
     </View>
   );
 };
-const styles = StyleSheet.create({
-    containerList: {
-      flex:1,
-      backgroundColor:Colors.background,
-      marginTop: 10,
-    },
-    containerItem: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: 10,
-      paddingVertical: 5,
-    },
-    twoColumn: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    },
-    item: {
-      paddingHorizontal: 15,
-      paddingVertical: 20,
-      backgroundColor: Colors.background,
-      borderBottomWidth: 1,
-      borderBottomColor: Colors.silver,
-    },
-    itemEven: {
-      backgroundColor: Colors.light,
-    },
-    itemOdd: {
-      backgroundColor: Colors.background,
-    },
-    itemText: {
-      fontSize: 18,
-    },
-    imageOfProduct: {
-      borderRadius:12,
-      height:60,
-      width: 60,
-    },
-    imageContainer: {
-      marginRight: 10,
-    },
-    column: {
-      flex: 1,
-      justifyContent: 'center',
-    },
-    row: {
-      flexDirection: 'row',
-    }
-  });
 
-export { dataSelling, itemCount, totalTonkho };
-export default SellingProductComponent;
+export { dataSelling, totalAmount };
+export default SellingProduct;
