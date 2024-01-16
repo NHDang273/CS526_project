@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TextInput, Imag
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../shared/colors';
 import { Dimensions } from 'react-native';
-import SellingProductComponent, {dataSelling} from '../Invoices/SellingProductComponent';
+import SellingProductComponent, {dataSelling} from './SellingProduct';
 
 const DetailInvoicesScreen = ({ navigation }) => {
     const screenWidth = Dimensions.get('window').width;

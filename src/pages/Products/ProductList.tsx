@@ -45,7 +45,7 @@ interface ProductListProps {
 const ProductList: React.FC<ProductListProps> = ({ data, onProductPress }) => {
   const renderFooter = () => {
     return (
-      <View style={{ height: 100, backgroundColor: 'white' }} />
+      <View style={{ height: 100 }} />
     );
   };
 
@@ -58,26 +58,96 @@ const ProductList: React.FC<ProductListProps> = ({ data, onProductPress }) => {
     >
       <TouchableWithoutFeedback onPress={() => onProductPress(item)}>
         <View style={styles.containerItem}>
-          <View style={styles.imageContainer}>
+          <View style={[{marginRight:10}]}>
             <Image source={{ uri: item.image }} style={styles.imageOfProduct} />
           </View>
           <View style={styles.twoColumn}>
-            <View style={styles.column1}>
-              <Text style={styles.itemText}>{item.name}</Text>
+            <View style={[styles.column, {marginLeft:10, alignItems: 'flex-start',}]}>
+              <Text style={styles.Text}>{item.name}</Text>
               <Text style={styles.itemID}>{item.id}</Text>
             </View>
-            <View style={styles.column}>
-              <Text style={styles.itemGiaBan}>{item.giaban}</Text>
-              <Text style={styles.itemTonKho}>{item.tonkho}</Text>
+            <View style={[styles.column, {alignItems: 'flex-end',}]}>
+              <Text style={[styles.Text, {color: isPressed?Colors.blue:'black'}]}>{isPressed?item.giaban:item.giagoc}</Text>
+              <Text style={[styles.Text, {color: Colors.green}]}>{item.tonkho}</Text>
             </View>
           </View>
         </View>
       </TouchableWithoutFeedback>
     </View>
   );
+  const [selectedOption, setSelectedOption] = useState('Original price');
+  const [isPressed, setIsPressed] = useState(false);
+  const [filterPressed, setFilterPressed] = useState(false);
+  const [arrowRotated, setArrowRotated] = useState(false);
+
+  
+  const handleArrowPress = () => {
+    setArrowRotated(!arrowRotated);
+  };
+
+  const handleSearchPress = () => {
+    // Xử lý sự kiện khi nhấn nút Search
+  };
+
+  const handleFilterPress = () => {
+    setFilterPressed(true);
+    // Xử lý sự kiện khi nhấn nút Filter
+  };
+
+  const handlePress = () => {
+    // Toggle the pressed state
+    setIsPressed(!isPressed);
+  
+    // Update the selectedOption based on the pressed state
+    if (isPressed) {
+      setSelectedOption('Original price');
+    } else {
+      setSelectedOption('Selling price');
+    }
+  };
 
   return (
     <View style={styles.containerList}>
+      {/* Thanh bar */}
+      <View style={styles.containerBar}>
+        <View style={styles.statusBar}>
+            <Text style={styles.titleText}>Products</Text>
+            <View style={styles.iconContainer}>
+            <TouchableOpacity onPress={handleSearchPress}>
+                <FontAwesome
+                name="search"
+                size={24}
+                color="gray"
+                style={styles.icon}
+                />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleFilterPress}>
+                <FontAwesome
+                name="filter"
+                size={24}
+                color={filterPressed ? Colors.blue : 'gray'}
+                style={styles.icon}
+                />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleArrowPress}>
+                <Ionicons
+                name="ios-arrow-up"
+                size={24}
+                color={arrowRotated ? Colors.blue : 'gray'}
+                style={[styles.icon, arrowRotated && styles.rotatedArrow]}
+                />
+            </TouchableOpacity>
+            </View>
+        </View>
+    </View>
+      <TouchableOpacity style={[styles.containerTotal, styles.row]} onPress={handlePress}>
+        <View style={[styles.row, {flex:3}]}>
+          <Text style={[styles.text, {color:Colors.blue, marginRight:-10}]}>{itemCount}</Text>
+          <Text style={[styles.text,]}>Products  -  Inventory</Text>
+          <Text style={[styles.text, {color:Colors.green, marginLeft:-10}]}>{totalTonkho}</Text>
+        </View>
+        <Text style={[styles.text, { flex: 1, textAlign: 'right', color: isPressed ? Colors.blue : 'black' }]}>{selectedOption}</Text>
+      </TouchableOpacity>
       <FlatList
         data={data}
         renderItem={renderItem}
@@ -90,14 +160,14 @@ const ProductList: React.FC<ProductListProps> = ({ data, onProductPress }) => {
 const styles = StyleSheet.create({
     containerList: {
       flex:1,
-      backgroundColor:Colors.background,
-      marginTop: 10,
+      backgroundColor:Colors.backgroundHome,
     },
     containerItem: {
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: 10,
       paddingVertical: 5,
+      marginTop:10,
     },
     twoColumn: {
       flex: 1,
@@ -117,42 +187,62 @@ const styles = StyleSheet.create({
     itemOdd: {
       backgroundColor: Colors.background,
     },
-    itemText: {
-      fontSize: 18,
-    },
-    itemName: {
+    Text: {
       fontSize: 18,
     },
     itemID: {
       color: 'gray',
       fontSize: 14,
     },
-    itemGiaBan: {
-      fontSize: 18,
-      color:Colors.blue,
-    },
-    itemTonKho: {
-      fontSize: 18,
-      color:Colors.green,
-    },
     imageOfProduct: {
       borderRadius:12,
       height:60,
       width: 60,
     },
-    imageContainer: {
-      marginRight: 10,
-    },
-    column1: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'flex-start',
-      marginLeft: 10,
-    },
     column: {
       flex: 1,
       justifyContent: 'center',
-      alignItems: 'flex-end',
+    },
+    containerTotal: {
+      backgroundColor: Colors.background,
+      borderBottomStartRadius:18,
+      borderBottomEndRadius:18,
+      borderTopWidth: 0.5,
+      borderTopColor: 'gray',
+      marginBottom:10,
+    },
+    text: {
+      fontSize: 14,
+      margin: 5,
+      padding:5,
+    },
+    row: {
+      flexDirection: 'row',
+    },
+    containerBar: {
+      borderRadius:12,
+    },
+    statusBar: {
+      height: 70,
+      backgroundColor: Colors.background,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: 15,
+      marginBottom:-10,
+    },
+    iconContainer: {
+      flexDirection: 'row',
+    },
+    icon: {
+      marginHorizontal: 10,
+    },
+    rotatedArrow: {
+      transform: [{ rotate: '180deg' }],
+    },
+    titleText: {
+      fontSize: 25,
+      fontWeight: 'bold',
     },
   });
 

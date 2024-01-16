@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -7,7 +7,6 @@ import HomeScreen from './pages/Home/HomeScreen';
 import NotificationsScreen from './pages/Notifications/NotificationsScreen';
 import LoginScreen from './pages/Login/LoginScreen';
 import RegisterScreen from './pages/Register/RegisterScreen';
-import ProfileScreen from './pages/More/MoreScreen';
 import DetailProfileScreen from './pages/More/Profile/DetailProfileScreen';
 
 import { Ionicons } from '@expo/vector-icons';
@@ -15,8 +14,9 @@ import AuthContext from './utils/AuthContext';
 import Colors from './shared/colors';
 import { Provider as PaperProvider } from 'react-native-paper';
 import theme from './assets/themes/theme';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
-import { StatusBar } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import ChangeInformationScreen from './pages/More/Profile/ChangeInformationScreen';
 import ResetPasswordScreen from './pages/More/Profile/ResetPasswordScreen';
 import ProductSreen from './pages/Products/ProductScreen';
@@ -24,6 +24,13 @@ import NewProductScreen from './pages/Products/NewProductScreen';
 import DetailProductScreen from './pages/Products/DetailProductScreen';
 import InvoicesScreen from './pages/Invoices/InvoicesScreen';
 import DetailInvoicesScreen from './pages/Invoices/DetailInvoicesScreen';
+import SettingScreen from './pages/More/Settings/SettingScreen';
+import More from './pages/More/More';
+
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
+LogBox.ignoreAllLogs(); //Ignore all log notifications
+
 StatusBar.setBarStyle('dark-content');
 StatusBar.setBackgroundColor('white');
 
@@ -84,7 +91,8 @@ const HomeTabs = ({ isLoggedIn }) => {
         }}
       />
       <Tab.Screen
-        name="MoreScreen"
+        name="More"
+        component={More}
         options={{
           tabBarLabel: 'More',
           headerShown: false,
@@ -92,15 +100,7 @@ const HomeTabs = ({ isLoggedIn }) => {
             <Ionicons name="list" size={size} color={color} />
           ),
         }}
-    >
-  {({ navigation, route }) => (
-    <ProfileScreen
-      isLoggedIn={isLoggedIn}
-      navigation={navigation}
-      route={route}
-    />
-  )}
-</Tab.Screen>
+      />
     </Tab.Navigator>
   );
 };
@@ -111,7 +111,25 @@ const App = () => {
   const updateLoggedInStatus = (status) => {
     setIsLoggedIn(status);
   };
-  
+  // Xoay màn hình
+  useEffect(() => {
+    const lockScreenOrientation = async () => {
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.ALL
+      );
+    };
+
+    lockScreenOrientation();
+
+    return () => {
+      unlockScreenOrientation();
+    };
+  }, []);
+
+  const unlockScreenOrientation = async () => {
+    await ScreenOrientation.unlockAsync();
+  };
+
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, updateLoggedInStatus }}>
        <PaperProvider theme={theme}>
@@ -125,9 +143,10 @@ const App = () => {
               {() => <HomeTabs isLoggedIn={isLoggedIn} />}
             </Stack.Screen>
             <Stack.Screen name="Register" component={RegisterScreen} />
-            <Stack.Screen name="DetailProfile" component={DetailProfileScreen} />
+            <Stack.Screen name="DetailProfile" component={DetailProfileScreen} /> 
             <Stack.Screen name="ChangeInformation" component={ChangeInformationScreen} />
-            <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} /> 
+            <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
+            <Stack.Screen name="Setting" component={SettingScreen} /> 
 
             <Stack.Screen name="NewProduct" component={NewProductScreen} /> 
             <Stack.Screen name="DetailProduct" component={DetailProductScreen} /> 
