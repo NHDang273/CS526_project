@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Image, Dimensions, StyleSheet, Text, SafeAreaView, TextInput, Button, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { View, Image, Dimensions, StyleSheet, Text, SafeAreaView, TextInput, Button, TouchableOpacity, TouchableHighlight, ScrollView } from 'react-native';
 import Colors from '../../shared/colors';
 import Bar from '../../components/Bar';
 import { Ionicons } from '@expo/vector-icons';
@@ -69,6 +69,7 @@ function LoginScreen({ navigation }) {
       <TouchableOpacity style={styles.rightButton}>
         <Ionicons name="language" size={24} color="black" />
       </TouchableOpacity>
+      <ScrollView>
       <Image
         source={require('../../assets/images/wolf2.png')}
         style={[styles.image, { width: windowWidth }]}
@@ -163,6 +164,7 @@ function LoginScreen({ navigation }) {
             .
           </Text>
       </View>
+      </ScrollView>
     </View>
   );
 }
@@ -331,7 +333,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 10,
-    marginTop: 50,
+    marginTop: 30,
     marginRight: 10,
   },
   iconImage: {

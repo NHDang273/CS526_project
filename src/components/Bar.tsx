@@ -22,14 +22,14 @@ const Bar = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    height: 100,
+    height: 70,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
   },
   backButton: {
     marginLeft:10,
-    marginTop:50,
+    marginTop:30,
   },
 });
 
