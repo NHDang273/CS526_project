@@ -4,12 +4,15 @@ import Bar from '../../components/Bar';
 import Colors from '../../shared/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
+import writeUserData from '../../../DataMethod';
 
 export default function RegisterScreen({ navigation}) {
   const windowWidth = Dimensions.get('window').width;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordCheck, setpasswordCheck] = useState('');
+  const [passwordCheckError, setpasswordCheckError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
@@ -18,7 +21,7 @@ export default function RegisterScreen({ navigation}) {
     console.log('Link pressed:', link);
   };
 
-  const handleLoginPress = () => {
+  const handleSigUpPress = () => {
     if (email === '') {
       setEmailError(true);
     } else {
@@ -30,17 +33,28 @@ export default function RegisterScreen({ navigation}) {
     } else {
       setPasswordError(false);
     }
-
+    if (password != passwordCheck) {
+      setpasswordCheckError(true);
+      return;
+    } else {
+      setpasswordCheckError(false);
+    }
     if (email === '' || password === '') {
       console.log('Email and password are required');
       return;
     }
-
+    
+    writeUserData(email,password);
     // Xử lý sự kiện khi nhấn vào nút Login
-    console.log('Login pressed');
+    console.log('Sign Up success!');
+    console.log('TK: '+email);
+    console.log('MK: '+password);
+    goToLoginScreen();
     // Thực hiện các xử lý khác (ví dụ: gọi API đăng nhập, kiểm tra thông tin đăng nhập, vv.)
   };
-
+  const goToLoginScreen = () => {
+    navigation.navigate('Login');
+  };
   const handleSignupPress = () => {
     navigation.navigate('Register');
     console.log('Signup pressed');
@@ -103,16 +117,16 @@ export default function RegisterScreen({ navigation}) {
             style={styles.inputText}
             placeholder="Varify Password"
             placeholderTextColor="gray"
-            value={password}
-            onChangeText={setPassword}
+            value={passwordCheck}
+            onChangeText={setpasswordCheck}
           />
-          {passwordError && <Text style={styles.errorMessage}>Password dose not match!</Text>}
+          {passwordCheckError && <Text style={styles.errorMessage}>Password dose not match!</Text>}
         </View>
       </View>
 
     {/*   Login */}
     <View>
-        <TouchableOpacity style={styles.borderButtonLogin} onPress={handleLoginPress}>
+        <TouchableOpacity style={styles.borderButtonLogin} onPress={handleSigUpPress}>
         <Text style={styles.textinButonLogin}>Signup</Text>
         </TouchableOpacity>
     </View>

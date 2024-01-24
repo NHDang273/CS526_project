@@ -5,16 +5,62 @@ import Bar from '../../components/Bar';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import AuthContext from '../../utils/AuthContext';
+import path from 'path';
+
+import { getDatabase, ref, onValue } from "firebase/database";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCFaW2EK3UDOpnuBN5PZcTgDeUUVRfLAho",
+  authDomain: "quanly-290ff.firebaseapp.com",
+  databaseURL: "https://quanly-290ff-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "quanly-290ff",
+  storageBucket: "quanly-290ff.appspot.com",
+  messagingSenderId: "1013329788432",
+  appId: "1:1013329788432:web:e5e65666eeb0f6f7001495",
+  measurementId: "G-M7LVGERCJ1"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getDatabase();
+// Xây dựng tham chiếu đến nút "Email" trong "TAIKHOAN"
+let emailValue = '';
+function GETEmail() : string{
+const emailRef = ref(db, 'TAIKHOAN/Email');
+onValue(emailRef, (snapshot) => {
+  emailValue = snapshot.val();
+});
+console.log("TK: "+ emailValue);
+return emailValue;
+
+}
+// Xây dựng tham chiếu đến nút "Password" trong "TAIKHOAN"
+function GETPassword() : string{
+let passwordValue = '';
+const passwordRef = ref(db, 'TAIKHOAN/Password');
+onValue(passwordRef, (snapshot) => {
+  passwordValue = snapshot.val();
+});
+console.log("MK: "+ passwordValue);
+return passwordValue;
+}
 
 function LoginScreen({ navigation }) {
   const windowWidth = Dimensions.get('window').width;
   const { updateLoggedInStatus } = useContext(AuthContext);
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-
+  const [userCheck, setuserCheck] = useState(false);
   const goToRegisterScreen = () => {
     navigation.navigate('Register');
   };
@@ -36,10 +82,16 @@ function LoginScreen({ navigation }) {
       console.log('Email and password are required');
       return;
     }
-
+    const Femail = GETEmail();
+    const Fpassword = GETPassword();
+    if (email != Femail || password != Fpassword) {
+      setuserCheck(true);
+      return;
+    } else {
+      setuserCheck(false);
+    }
     navigation.navigate('HomeTabs', { screen: 'Home' });
     updateLoggedInStatus(true);
-
     console.log('Login pressed');
   };
 
@@ -103,8 +155,8 @@ function LoginScreen({ navigation }) {
           />
           {renderErrorMessage(passwordError)}
         </View>
+        {userCheck && <Text style={styles.errorMessage}>Email or password is incorrect!</Text>}
       </View>
-
       <View>
         <View>
           <TouchableOpacity style={styles.borderButtonLogin} onPress={handleLoginPress}>
@@ -146,8 +198,7 @@ function LoginScreen({ navigation }) {
       </View>
       {/* Chèn các điều khoản và chính sách */}
       <View style={styles.container1}>
-          <Text style={styles.text}>
-          By clicking Log in, you agree to our 
+          <Text style={styles.text}> By clicking Log in, you agree to our 
             <TouchableHighlight
               underlayColor="transparent"
               onPress={() => handleLinkPress('từ thứ nhất')}
