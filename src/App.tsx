@@ -28,6 +28,11 @@ import SettingScreen from './pages/More/Settings/SettingScreen';
 import More from './pages/More/More';
 
 import { LogBox } from 'react-native';
+import SupplierScreen from './pages/More/Supplier/SupplierScreen';
+import EditSupplier from './pages/More/Supplier/EditSupplier';
+import InventoryScreen from './pages/Products/Inventory/InventoryScreen';
+import DetailSupplier from './pages/More/Supplier/DetailSupplier';
+import SupplierList from './pages/More/Supplier/SupplierList';
 LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
 
@@ -147,7 +152,13 @@ const App = () => {
             <Stack.Screen name="ChangeInformation" component={ChangeInformationScreen} />
             <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
             <Stack.Screen name="Setting" component={SettingScreen} /> 
+            
+            <Stack.Screen name="SupplierList" component={SupplierList} /> 
+            <Stack.Screen name="DetailSupplier" component={DetailSupplier} /> 
+            <Stack.Screen name="EditSupplier" component={EditSupplier} />  
+            <Stack.Screen name="Supplier" component={SupplierScreen} /> 
 
+            <Stack.Screen name="Inventory" component={InventoryScreen} /> 
             <Stack.Screen name="NewProduct" component={NewProductScreen} /> 
             <Stack.Screen name="DetailProduct" component={DetailProductScreen} /> 
 

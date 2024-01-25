@@ -31,6 +31,15 @@ const More = ({ navigation }) => {
         console.log('Logout');
       };
 
+      const handleSupplierPress = () => {
+        console.log('Suppliers');
+        navigation.navigate('Supplier');
+      }
+
+      const handleInventoryPress = () => {
+        navigation.navigate('Inventory');
+      }
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor:Colors.backgroundHome}}>
           <ScrollView contentContainerStyle={styles.scrollViewContent}>
@@ -68,13 +77,13 @@ const More = ({ navigation }) => {
             {/* Các nút tùy chọn */}
             <View style={{ height: 'auto', padding: 10, }}>
                 <View style={styles.row}>
-                    <TouchableOpacity style={[styles.button, styles.row]} >
+                    <TouchableOpacity style={[styles.button, styles.row]} onPress={handleSupplierPress}>
                         <Ionicons name= 'add' size={24} style={styles.icon} />
-                        <Text style={[styles.buttonLabel, {marginStart: 10,}]}>Import</Text>
+                        <Text style={[styles.buttonLabel, {marginStart: 10,}]}>Supplier</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.button, styles.row]} >
+                    <TouchableOpacity style={[styles.button, styles.row]} onPress={handleInventoryPress}>
                         <Ionicons name= 'add' size={24} style={styles.icon} />
-                        <Text style={[styles.buttonLabel, {marginStart: 10,}]}>Export</Text>
+                        <Text style={[styles.buttonLabel, {marginStart: 10,}]}>Inventory</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.row}>

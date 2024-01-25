@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import { View, Image, Dimensions, StyleSheet, Text, SafeAreaView, TextInput, Button, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { View, Image, Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, TouchableHighlight, ScrollView } from 'react-native';
 import Bar from '../../components/Bar';
+import {currentDate} from '../../components/getDate';
 import Colors from '../../shared/colors';
-import { Ionicons } from '@expo/vector-icons';
-import { NavigationContainer } from '@react-navigation/native';
-import writeUserData from '../../../DataMethod';
+import {writeUserData} from './hehe';
 
 export default function RegisterScreen({ navigation}) {
   const windowWidth = Dimensions.get('window').width;
+  const ngaytao = currentDate;
 
   const [email, setEmail] = useState('');
+  const [vaitro, setVaiTro] = useState('admin');
+  const [userName, setUsername] = useState('');
+  const [fullName, setFullname] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setpasswordCheck] = useState('');
   const [passwordCheckError, setpasswordCheckError] = useState(false);
@@ -44,11 +47,14 @@ export default function RegisterScreen({ navigation}) {
       return;
     }
     
-    writeUserData(email,password);
+    writeUserData(email, password, vaitro, fullName, userName, ngaytao);
     // Xử lý sự kiện khi nhấn vào nút Login
     console.log('Sign Up success!');
     console.log('TK: '+email);
     console.log('MK: '+password);
+    console.log('T: '+fullName);
+    console.log('TDN: '+userName);
+    console.log('date: '+ngaytao);
     goToLoginScreen();
     // Thực hiện các xử lý khác (ví dụ: gọi API đăng nhập, kiểm tra thông tin đăng nhập, vv.)
   };
@@ -72,6 +78,7 @@ export default function RegisterScreen({ navigation}) {
 
   return (
     <View style={styles.background}>
+      <ScrollView>
       <Bar />
       {/* Hiển thị hình ảnh */}
       <Image
@@ -80,6 +87,34 @@ export default function RegisterScreen({ navigation}) {
       />
       {/* Hiển thị 2 inputText để nhập tài khoản mật khẩu */}
       <View style={styles.borderInput}>
+      <View style={[styles.border, emailError && styles.errorBorder]}>
+          <Image
+            source={require('../../assets/images/email.png')}
+            style={[styles.icon]}
+          />
+          <TextInput
+            style={styles.inputText}
+            placeholder="Full Name"
+            placeholderTextColor="gray"
+            value={fullName}
+            onChangeText={setFullname}
+          />
+          {emailError && <Text style={styles.errorMessage}>Please enter your email</Text>}
+        </View>
+        <View style={[styles.border, emailError && styles.errorBorder]}>
+          <Image
+            source={require('../../assets/images/email.png')}
+            style={[styles.icon]}
+          />
+          <TextInput
+            style={styles.inputText}
+            placeholder="UserName"
+            placeholderTextColor="gray"
+            value={userName}
+            onChangeText={setUsername}
+          />
+          {emailError && <Text style={styles.errorMessage}>Please enter your email</Text>}
+        </View>
         <View style={[styles.border, emailError && styles.errorBorder]}>
           <Image
             source={require('../../assets/images/email.png')}
@@ -167,6 +202,7 @@ export default function RegisterScreen({ navigation}) {
             .
           </Text>
       </View>
+      </ScrollView>
     </View>
   );
 }
@@ -221,7 +257,7 @@ const styles = StyleSheet.create({
     width: 108, // Điều chỉnh chiều rộng (độ rộng mới của ảnh)
     height: 108, // Điều chỉnh chiều cao (chiều cao mới của ảnh)
     alignSelf: 'center', // Căn giữa theo chiều ngang
-    marginTop: 60, // Đẩy ảnh lên cùng một khoảng trống ở phía trên
+    marginTop: 40, // Đẩy ảnh lên cùng một khoảng trống ở phía trên
   },
   background: {
     backgroundColor:'white',

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, FlatList, Image, TouchableWithoutFeedback } from 'react-native';
 import { FontAwesome, Ionicons } from 'react-native-vector-icons';
 import Colors from '../../shared/colors';
-import ProductList, { data, itemCount, totalTonkho } from './ProductList';
+import ProductList, { data} from './ProductList';
 
 const ProductScreen = ({ navigation }) => {
   const handleProductPress = () => {
@@ -13,6 +13,7 @@ const ProductScreen = ({ navigation }) => {
     navigation.navigate('NewProduct');
   };
 
+  
 
     return (
         <SafeAreaView style={styles.container}>

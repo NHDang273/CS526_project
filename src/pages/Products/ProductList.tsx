@@ -157,5 +157,5 @@ const ProductList: React.FC<ProductListProps> = ({ data, onProductPress }) => {
     </View>
   );
 };
-export { data, itemCount, totalTonkho };
+export { data };
 export default ProductList;

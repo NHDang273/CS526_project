@@ -2,34 +2,29 @@ import React from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../style';
 import Colors from '../../../shared/colors';
 
-const DetailProfileScreen = ({ navigation }) => {
+const DetailSupplier = ({ navigation, route }) => {
+  const { supplier } = route.params;
+  console.log(supplier );
+
   const handleInfoIconPress = () => {
-    navigation.navigate('ChangeInformation');
+    navigation.navigate('EditSupplier');
     console.log('Adjust was pressed.');
   };
-
-  const handleResetPasswordPress = () => {
-    navigation.navigate('ResetPassword');
-    console.log('Goto reset was pressed.');
-  };
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={30} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerText}>Nguyễn Đắc Cường</Text>
+        <Text style={styles.headerText}>{supplier.TenNhaCungCap}</Text>
         <TouchableOpacity onPress={handleInfoIconPress}>
           <View style={styles.headerTextContainer}>
             <Ionicons name="pencil" size={25} color="black" />
@@ -39,36 +34,25 @@ const DetailProfileScreen = ({ navigation }) => {
       <ScrollView style={[{height: 'auto', marginTop: 20, backgroundColor: Colors.background, borderRadius: 12,}]}>
         <View>
           <View style={[styles.textContainer, styles.row]}>
-            <Text style={styles.textLeft}>Username</Text>
-            <Text style={styles.textRight}>daccuong</Text>
+            <Text style={styles.textLeft}>Name</Text>
+            <Text style={styles.textRight}>NCC A</Text>
           </View>
           <View style={[styles.textContainer, styles.row]}>
-            <Text style={styles.textLeft}>User Name</Text>
-            <Text style={styles.textRight}>Nguyễn Đắc Cường</Text>
+            <Text style={styles.textLeft}>Address</Text>
+            <Text style={styles.textRight}>123 Đường ABC, Quận 1</Text>
           </View>
           <View style={[styles.textContainer, styles.row,]}>
             <Text style={[styles.textLeft, {flex:2}]}>Phone Number</Text>
-            <Text style={styles.textRight}>012345678</Text>
-          </View>
-          <View style={[styles.textContainer, styles.row]}>
-            <Text style={styles.textLeft}>Date of birth</Text>
-            <Text style={styles.textRight}>11/03/2003</Text>
+            <Text style={styles.textRight}>0123456789</Text>
           </View>
           <View style={[styles.textContainer, styles.row]}>
             <Text style={styles.textLeft}>Email</Text>
             <Text style={styles.textRight}>daccuong123@gmail.com</Text>
           </View>
-          <TouchableWithoutFeedback onPress={handleResetPasswordPress}>
-            <View style={[styles.textContainer, styles.row, {borderBottomWidth:0}]}>
-              <Text style={[styles.textLeft, {flex:2}]}>Reset password</Text>
-              <Text style={styles.textRight}>********</Text>
-              <Ionicons name="chevron-forward-outline" size={20} color="black" />
-            </View>
-          </TouchableWithoutFeedback>
         </View>
         <Text style={[{height:50}]}></Text>
       </ScrollView>
     </SafeAreaView>
   );
 };
-export default DetailProfileScreen;
+export default DetailSupplier;

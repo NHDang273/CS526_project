@@ -17,14 +17,14 @@ import { getAnalytics } from "firebase/analytics";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCFaW2EK3UDOpnuBN5PZcTgDeUUVRfLAho",
-  authDomain: "quanly-290ff.firebaseapp.com",
-  databaseURL: "https://quanly-290ff-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "quanly-290ff",
-  storageBucket: "quanly-290ff.appspot.com",
-  messagingSenderId: "1013329788432",
-  appId: "1:1013329788432:web:e5e65666eeb0f6f7001495",
-  measurementId: "G-M7LVGERCJ1"
+  apiKey: "AIzaSyCOpvdy5a6y6sL4t1x8EMxnFfbzh9q1b_8",
+  authDomain: "myproject-c9b45.firebaseapp.com",
+  databaseURL: "https://myproject-c9b45-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "myproject-c9b45",
+  storageBucket: "myproject-c9b45.appspot.com",
+  messagingSenderId: "910814047722",
+  appId: "1:910814047722:web:4d87fd4713973a221f9693",
+  measurementId: "G-7YQHWEKD2H"
 };
 
 // Initialize Firebase
@@ -32,25 +32,46 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getDatabase();
 // Xây dựng tham chiếu đến nút "Email" trong "TAIKHOAN"
-let emailValue = '';
-function GETEmail() : string{
-const emailRef = ref(db, 'TAIKHOAN/Email');
-onValue(emailRef, (snapshot) => {
-  emailValue = snapshot.val();
-});
-console.log("TK: "+ emailValue);
-return emailValue;
-
+// Xây dựng hàm để tìm người dùng dựa trên email
+function findUserByEmail(email) {
+  return new Promise((resolve, reject) => {
+    const usersRef = ref(db, '/__collections__/TaiKhoan');
+    onValue(usersRef, (snapshot) => {
+      const users = snapshot.val();
+      const foundUser = Object.keys(users).find((userId) => {
+        return users[userId].Email === email;
+      });
+      resolve(foundUser);
+    }, (error) => {
+      reject(error);
+    });
+  });
 }
+
+// Xây dựng tham chiếu đến nút "Email" trong "TAIKHOAN"
+function GETEmail(userId) {
+  return new Promise((resolve, reject) => {
+    const emailRef = ref(db, `/__collections__/TaiKhoan/${userId}/Email`);
+    onValue(emailRef, (snapshot) => {
+      const emailValue = snapshot.val();
+      resolve(emailValue);
+    }, (error) => {
+      reject(error);
+    });
+  });
+}
+
 // Xây dựng tham chiếu đến nút "Password" trong "TAIKHOAN"
-function GETPassword() : string{
-let passwordValue = '';
-const passwordRef = ref(db, 'TAIKHOAN/Password');
-onValue(passwordRef, (snapshot) => {
-  passwordValue = snapshot.val();
-});
-console.log("MK: "+ passwordValue);
-return passwordValue;
+function GETPassword(userId) {
+  return new Promise((resolve, reject) => {
+    const passwordRef = ref(db, `/__collections__/TaiKhoan/${userId}/MatKhau`);
+    onValue(passwordRef, (snapshot) => {
+      const passwordValue = snapshot.val();
+      resolve(passwordValue);
+    }, (error) => {
+      reject(error);
+    });
+  });
 }
 
 function LoginScreen({ navigation }) {
@@ -74,26 +95,41 @@ function LoginScreen({ navigation }) {
     console.log('Link pressed:', link);
   };
 
-  const handleLoginPress = () => {
+  const handleLoginPress = async () => {
     setEmailError(email === '');
     setPasswordError(password === '');
-
+  
     if (email === '' || password === '') {
       console.log('Email and password are required');
       return;
     }
-    const Femail = GETEmail();
-    const Fpassword = GETPassword();
-    if (email != Femail || password != Fpassword) {
-      setuserCheck(true);
-      return;
-    } else {
-      setuserCheck(false);
+  
+    try {
+      const foundUserId = await findUserByEmail(email);
+  
+      if (!foundUserId) {
+        console.log('User not found');
+        return;
+      }
+  
+      const Femail = await GETEmail(foundUserId);
+      const Fpassword = await GETPassword(foundUserId);
+  
+      if (email !== Femail || password !== Fpassword) {
+        setuserCheck(true);
+        return;
+      } else {
+        setuserCheck(false);
+      }
+  
+      navigation.navigate('HomeTabs', { screen: 'Home' });
+      updateLoggedInStatus(true);
+      console.log('Login pressed');
+    } catch (error) {
+      console.log('Error retrieving user:', error);
     }
-    navigation.navigate('HomeTabs', { screen: 'Home' });
-    updateLoggedInStatus(true);
-    console.log('Login pressed');
   };
+  
 
   const handleFacebookPress = () => {
     console.log('Facebook pressed');
