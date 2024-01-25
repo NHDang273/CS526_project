@@ -3,11 +3,21 @@ import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TextInput, Imag
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import Colors from '../../shared/colors';
 import { Dimensions } from 'react-native';
+import { id, writeProductData } from './hehe';
 
 const NewProductScreen = ({ navigation }) => {
+    const [name, setName] = useState('');
+    const [giaBan, setGiaBan] = useState('');
+    const [giaNhap, setGiaNhap] = useState('');
+    const [IDNCC, setIDNCC] = useState('');
+    const [moTa, setMoTa] = useState('');
+    const [tonKho, setTonKho] = useState('');
+    const [image, setImage] = useState('');
+
     const screenWidth = Dimensions.get('window').width;
     const handleSave = () => {
         //Lưu và thoát ra
+        writeProductData(id, name, giaBan, giaNhap, IDNCC, moTa, tonKho, image);
         navigation.goBack()
       };
     
@@ -31,8 +41,14 @@ const NewProductScreen = ({ navigation }) => {
         </View>
         <View style={styles.container}>
             <ScrollView>
-                <View>
+                <View style={styles.row}>
                     <Image source={{ uri: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_0.jpg' }} style={[styles.image, {margin:15, borderRadius:6,}]} />
+                    <TextInput
+                                style={[styles.textInput, { flex: 1 }]}
+                                placeholder="URL"
+                                value={image}
+                                onChangeText={text => setImage(text)}
+                            />
                 </View>
                 <View style={[styles.containerItem, {height: 'auto', width: 'auto', borderRadius: 12, marginBottom:15}]}>
                     <View style={[styles.column, {padding:10, width: screenWidth}]}>
@@ -42,27 +58,52 @@ const NewProductScreen = ({ navigation }) => {
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
                             <Text style={[styles.text, {flex: 1}]}>Name</Text>
-                            <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='Name of product'></TextInput>
+                            <TextInput
+                                style={[styles.textHint, styles.textInput, { borderBottomWidth: 1, borderColor: 'gray', flex: 2 }]}
+                                placeholder="Product name"
+                                value={name}
+                                onChangeText={text => setName(text)}
+                            />
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
                             <Text style={[styles.text, {flex: 1}]}>Product Group</Text>
                             <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='Product category'></TextInput>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
-                            <Text style={[styles.text, {flex: 1}]}>Brand</Text>
-                            <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='Select a brand'></TextInput>
+                            <Text style={[styles.text, {flex: 1}]}>Supplier</Text>
+                            <TextInput 
+                            style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} 
+                            placeholder='Select a brand'                            
+                            value={IDNCC}
+                            onChangeText={text => setIDNCC(text)}
+                            />
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
                             <Text style={[styles.text, {flex: 1}]}>Selling price</Text>
-                            <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='0'></TextInput>
+                            <TextInput 
+                            style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} 
+                            placeholder='0'
+                            value={giaBan}
+                            onChangeText={text => setGiaBan(text)}
+                            />
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
                             <Text style={[styles.text, {flex: 1}]}>Original price</Text>
-                            <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='0'></TextInput>
-                        </TouchableOpacity>
+                            <TextInput 
+                            style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} 
+                            placeholder='0'
+                            value={giaNhap}
+                            onChangeText={text => setGiaNhap(text)}
+                            />
+                            </TouchableOpacity>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
-                            <Text style={[styles.text, {flex: 1}]}>Inventory</Text>
-                            <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='0'></TextInput>
+                            <Text style={[styles.text, {flex: 1}]}>TonKho</Text>
+                            <TextInput 
+                            style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} 
+                            placeholder='0'
+                            value={tonKho}
+                            onChangeText={text => setTonKho(text)}
+                            />
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
                             <Text style={[styles.text, {flex: 1}]}>Weight (gram)</Text>
@@ -100,7 +141,12 @@ const NewProductScreen = ({ navigation }) => {
                 <View style={[styles.containerItem, {height: 'auto', width: 'auto', borderRadius: 12, marginBottom:15}]}>
                     <View style={[styles.column, {padding:10, width: screenWidth}]}>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
-                        <TextInput style={[styles.textHint, styles.textInput, { flex: 1 }]} multiline={true} numberOfLines={4} placeholder="Description"></TextInput>
+                        <TextInput 
+                        style={[styles.textHint, styles.textInput, { flex: 1 }]} multiline={true} numberOfLines={4} 
+                        placeholder="Description"
+                        value={moTa}
+                        onChangeText={text => setMoTa(text)}
+                        />
                         </TouchableOpacity>
                     </View>
                 </View>

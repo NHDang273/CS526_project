@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, FlatList, Image, TouchableWithoutFeedback } from 'react-native';
 import { FontAwesome, Ionicons } from 'react-native-vector-icons';
 import Colors from '../../shared/colors';
+// import ProductList, {data} from './ProductList';
 import ProductList from './ProductList';
 import { getProductData } from './DataProduct';
 
@@ -23,6 +24,9 @@ const ProductScreen = ({ navigation }) => {
     const iD = productData[index].ID;
     navigation.navigate('DetailProduct', { product, iD });
   };
+  // const handleProductPress = () => {
+  //   navigation.navigate('DetailProduct');
+  // };
 
   console.log(productData);
 
