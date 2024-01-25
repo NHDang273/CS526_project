@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../../shared/colors';
-import { setSupplierData } from './hehe';
+import { id, writeSupplierData } from './hehe';
 
-const EditSupplier = ({ navigation }) => {
+
+const NewSupplier = ({ navigation }) => {
   
     const [Name, setName] = useState('daccuong');
     const [Address, setAddress] = useState('Nguyễn Đắc Cường');
@@ -59,25 +60,13 @@ const EditSupplier = ({ navigation }) => {
       }
     };
   
+    const goBack = () => {
+        navigation.navigate('More');
+    };
     const handleSavePress = () => {
-      Alert.alert(
-        'Xác nhận xóa',
-        'Bạn có chắc chắn muốn xóa?',
-        [
-          {
-            text: 'Cancel',
-            style: 'cancel',
-          },
-          {
-            text: 'Delete',
-            style: 'destructive',
-            onPress: () => {
-              setSupplierData(Name, Address, phoneNumber, email);
-            },
-          },
-        ],
-        { cancelable: true }
-      );
+      console.log('Save was pressed.');
+      writeSupplierData(id, Name, Address, phoneNumber, email);
+      goBack();
     };
   
     return (
@@ -86,7 +75,7 @@ const EditSupplier = ({ navigation }) => {
           <TouchableOpacity style={[{padding: 5}]} onPress={() => navigation.goBack()}>
             <Ionicons name="arrow-back" size={30} color="black" />
           </TouchableOpacity>
-          <Text style={styles.headerText}>Edit supplier information</Text>
+          <Text style={styles.headerText}>New supplier</Text>
         </View>
         <ScrollView style={[{margin: 10, borderRadius: 12,}]}>
           <View style={[{height:'auto', backgroundColor: Colors.background, borderRadius: 12,}]}>
@@ -240,4 +229,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditSupplier;
+export default NewSupplier;

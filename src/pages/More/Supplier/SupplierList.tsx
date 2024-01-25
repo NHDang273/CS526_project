@@ -9,9 +9,11 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import styles from '../style';
+import styles1 from '../../Products/styles';
 import Colors from '../../../shared/colors';
 
 interface Supplier {
+  ID: string;
   TenNhaCungCap: string;
   DiaChi: string;
   Email: string;
@@ -30,14 +32,18 @@ const SupplierList: React.FC<SupplierListProps> = ({ data, onSupplierPress }) =>
     );
   };
 
-  const renderItem = ({ item }: { item: Supplier }) => (
-    <View>
+  const renderItem = ({ item, index }: { item: Supplier; index: number  }) => (
+    <View
+      style={[
+        {borderRadius:12,},
+        styles1.item,
+        index % 2 === 0 ? styles1.itemOdd : styles1.itemEven,
+      ]}
+    >
       <TouchableWithoutFeedback onPress={() => onSupplierPress(item)}>
         <View>
-          <Text>{item.TenNhaCungCap}</Text>
-          <Text style={[{ color: 'red' }]}>Address: {item.DiaChi}</Text>
-          <Text style={[{ color: 'red' }]}>{item.Email}</Text>
-          <Text>Phone: {item.SoDienThoai}</Text>
+          <Text style={[{ color: 'red', fontSize:16, fontWeight: 'bold', }]}>Supplier: {item.TenNhaCungCap}</Text>
+          <Text style={[{ color: 'black' }]}>Phone Number: {item.SoDienThoai}</Text>
         </View>
       </TouchableWithoutFeedback>
     </View>
@@ -45,9 +51,9 @@ const SupplierList: React.FC<SupplierListProps> = ({ data, onSupplierPress }) =>
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView
+      <View
         style={[
-          { height: 'auto', flex: 1, backgroundColor: Colors.background, borderRadius: 12 },
+          { height: 'auto', flex: 1, backgroundColor: Colors.background, borderRadius: 12, marginTop: -15, marginLeft:10, marginRight:10,},
         ]}
       >
         {/* danh sach nha cung cap */}
@@ -55,12 +61,12 @@ const SupplierList: React.FC<SupplierListProps> = ({ data, onSupplierPress }) =>
           data={data}
           renderItem={renderItem}
           ListFooterComponent={renderFooter}
-          keyExtractor={(item) => item.TenNhaCungCap}
+          keyExtractor={(item) => item.ID}
         />
         <Text style={[{ height: 50 }]}></Text>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
-
+export {Supplier};
 export default SupplierList;

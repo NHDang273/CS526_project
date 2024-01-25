@@ -33,7 +33,7 @@ const More = ({ navigation }) => {
 
       const handleSupplierPress = () => {
         console.log('Suppliers');
-        navigation.navigate('Supplier');
+        navigation.navigate('SupplierStack');
       }
 
       const handleInventoryPress = () => {

@@ -19,10 +19,16 @@ const SupplierScreen = ({ navigation }) => {
   }, []);
 
   const handleSupplierPress = (supplier) => {
-    navigation.navigate('DetailSupplier', { supplier  });
+    const index = supplierData.indexOf(supplier);
+    const iD = supplierData[index].ID;
+    navigation.navigate('DetailSupplier', { supplier, iD });
   };
 
   console.log(supplierData);
+
+  const handleAddPress = () => {
+    navigation.navigate('NewSupplier');
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -31,12 +37,13 @@ const SupplierScreen = ({ navigation }) => {
           <Ionicons name="arrow-back" size={30} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerText}>Suppliers</Text>
+        <TouchableOpacity onPress={handleAddPress} style={[{marginRight: 10,}]}>
+            <Ionicons name="add" size={30} color="blue" />
+          </TouchableOpacity>
       </View>
       {/* danh sach nha cung cap */}
       <SupplierList data={supplierData} onSupplierPress={handleSupplierPress} />
-      <Text style={[{ height: 50 }]}></Text>
     </SafeAreaView>
   );
 };
-
 export default SupplierScreen;

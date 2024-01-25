@@ -19,20 +19,16 @@ import * as ScreenOrientation from 'expo-screen-orientation';
 import { Platform, StatusBar } from 'react-native';
 import ChangeInformationScreen from './pages/More/Profile/ChangeInformationScreen';
 import ResetPasswordScreen from './pages/More/Profile/ResetPasswordScreen';
-import ProductSreen from './pages/Products/ProductScreen';
-import NewProductScreen from './pages/Products/NewProductScreen';
-import DetailProductScreen from './pages/Products/DetailProductScreen';
 import InvoicesScreen from './pages/Invoices/InvoicesScreen';
 import DetailInvoicesScreen from './pages/Invoices/DetailInvoicesScreen';
 import SettingScreen from './pages/More/Settings/SettingScreen';
 import More from './pages/More/More';
 
 import { LogBox } from 'react-native';
-import SupplierScreen from './pages/More/Supplier/SupplierScreen';
-import EditSupplier from './pages/More/Supplier/EditSupplier';
 import InventoryScreen from './pages/Products/Inventory/InventoryScreen';
-import DetailSupplier from './pages/More/Supplier/DetailSupplier';
-import SupplierList from './pages/More/Supplier/SupplierList';
+import SupplierStackScreen from './pages/More/Supplier/index';
+import ProductStackScreen from './pages/Products';
+
 LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
 
@@ -85,8 +81,8 @@ const HomeTabs = ({ isLoggedIn }) => {
         }}
       />
       <Tab.Screen
-        name="Product"
-        component={ProductSreen}
+        name="Products"
+        component={ProductStackScreen}
         options={{
           tabBarLabel: 'Products',
           headerShown: false,
@@ -136,36 +132,37 @@ const App = () => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, updateLoggedInStatus }}>
-       <PaperProvider theme={theme}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, setIsLoggedIn, updateLoggedInStatus }}
+    >
+      <PaperProvider theme={theme}>
         <NavigationContainer>
           <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}>
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="HomeTabs">
               {() => <HomeTabs isLoggedIn={isLoggedIn} />}
             </Stack.Screen>
             <Stack.Screen name="Register" component={RegisterScreen} />
-            <Stack.Screen name="DetailProfile" component={DetailProfileScreen} /> 
+            <Stack.Screen name="DetailProfile" component={DetailProfileScreen} />
             <Stack.Screen name="ChangeInformation" component={ChangeInformationScreen} />
             <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
-            <Stack.Screen name="Setting" component={SettingScreen} /> 
-            
-            <Stack.Screen name="SupplierList" component={SupplierList} /> 
-            <Stack.Screen name="DetailSupplier" component={DetailSupplier} /> 
-            <Stack.Screen name="EditSupplier" component={EditSupplier} />  
-            <Stack.Screen name="Supplier" component={SupplierScreen} /> 
+            <Stack.Screen name="Setting" component={SettingScreen} />
 
-            <Stack.Screen name="Inventory" component={InventoryScreen} /> 
-            <Stack.Screen name="NewProduct" component={NewProductScreen} /> 
-            <Stack.Screen name="DetailProduct" component={DetailProductScreen} /> 
+            <Stack.Screen
+              name="SupplierStack"
+              component={SupplierStackScreen}
+              options={{ headerShown: false }}
+            />
 
-            <Stack.Screen name="DetailInvoices" component={DetailInvoicesScreen} /> 
+            <Stack.Screen name="Inventory" component={InventoryScreen} />
+            <Stack.Screen name="DetailInvoices" component={DetailInvoicesScreen} />
           </Stack.Navigator>
         </NavigationContainer>
-       </PaperProvider>
+      </PaperProvider>
     </AuthContext.Provider>
   );
 };

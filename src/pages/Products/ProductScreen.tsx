@@ -1,24 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, FlatList, Image, TouchableWithoutFeedback } from 'react-native';
 import { FontAwesome, Ionicons } from 'react-native-vector-icons';
 import Colors from '../../shared/colors';
-import ProductList, { data} from './ProductList';
+import ProductList from './ProductList';
+import { getProductData } from './DataProduct';
 
 const ProductScreen = ({ navigation }) => {
-  const handleProductPress = () => {
-    navigation.navigate('DetailProduct');
+  const [productData, setProductData] = useState([]);
+
+  useEffect(() => {
+    getProductData()
+      .then((productData) => {
+        setProductData(Object.values(productData));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  const handleProductPress = (product) => {
+    const index = productData.indexOf(product);
+    const iD = productData[index].ID;
+    navigation.navigate('DetailProduct', { product, iD });
   };
+
+  console.log(productData);
 
   const gotoNewProductScreen = () => {
     navigation.navigate('NewProduct');
   };
 
-  
-
     return (
         <SafeAreaView style={styles.container}>
         {/* Màn hình sản phầm */}
-        <ProductList data={data} onProductPress={handleProductPress} />
+        <ProductList data={productData} onProductPress={handleProductPress} />
 
         {/* nút thêm sản phẩm */}
         <View style={styles.addButtonContainer}>

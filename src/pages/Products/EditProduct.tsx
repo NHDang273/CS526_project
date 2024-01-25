@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import Colors from '../../shared/colors';
 import { Dimensions } from 'react-native';
 
-const DetailProductScreen = ({ navigation, route }) => {
-    const { product, iD } = route.params;
-    console.log(product );
-    console.log(iD);
-    
+const EditProduct = ({ navigation }) => {
     const screenWidth = Dimensions.get('window').width;
     const handleSave = () => {
         //Lưu và thoát ra
@@ -25,12 +21,12 @@ const DetailProductScreen = ({ navigation, route }) => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons name="arrow-back" size={30} color="black" />
           </TouchableOpacity>
-          <Text style={styles.headerText}>Name</Text>
-          <TouchableOpacity onPress={handleEllipsisPress} style={[{marginRight: 20,}]}>
-            <Ionicons name="pencil" size={24} color="blue" />
+          <Text style={styles.headerText}>New Product</Text>
+          <TouchableOpacity onPress={handleSave}>
+            <Text style={[styles.blueText, {marginRight: 10, padding: 5}]}>Save</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleEllipsisPress}>
-            <Ionicons name="trash-bin" size={24} color="red" />
+            <FontAwesome name="plus-square" size={30} color="#1DA1F2" />
           </TouchableOpacity>
         </View>
         <View style={styles.container}>
@@ -42,40 +38,39 @@ const DetailProductScreen = ({ navigation, route }) => {
                     <View style={[styles.column, {padding:10, width: screenWidth}]}>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
                             <Text style={[styles.text, {flex: 1}]}>ID</Text>
-                            {/* <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='Automation ID'></TextInput> */}
+                            <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='Automation ID'></TextInput>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
                             <Text style={[styles.text, {flex: 1}]}>Name</Text>
-                            {/* <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder={product.TenSP}></TextInput> */}
+                            <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='Name of product'></TextInput>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
                             <Text style={[styles.text, {flex: 1}]}>Product Group</Text>
-                            {/* <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='Product category'></TextInput> */}
+                            <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='Product category'></TextInput>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
                             <Text style={[styles.text, {flex: 1}]}>Brand</Text>
-                            {/* <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='Select a brand'></TextInput> */}
+                            <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='Select a brand'></TextInput>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
                             <Text style={[styles.text, {flex: 1}]}>Selling price</Text>
-                            {/* <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='0'></TextInput> */}
+                            <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='0'></TextInput>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
                             <Text style={[styles.text, {flex: 1}]}>Original price</Text>
-                            {/* <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='0'></TextInput> */}
+                            <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='0'></TextInput>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
                             <Text style={[styles.text, {flex: 1}]}>Inventory</Text>
-                            {/* <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='0'></TextInput> */}
+                            <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='0'></TextInput>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
                             <Text style={[styles.text, {flex: 1}]}>Weight (gram)</Text>
-                            {/* <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='0'></TextInput> */}
+                            <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='0'></TextInput>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.row, styles.button , {justifyContent: 'space-between', alignItems:'center', alignContent:'center'}]}>
                             <Text style={[styles.text, {flex: 1}]}>Located</Text>
-                            <Text style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]}></Text>
-                            {/* <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='Select located'></TextInput> */}
+                            <TextInput style={[styles.textHint, styles.textInput, {borderBottomWidth:1, borderColor: 'gray', flex: 2}]} placeholder='Select located'></TextInput>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -183,4 +178,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default DetailProductScreen;
+export default EditProduct;
