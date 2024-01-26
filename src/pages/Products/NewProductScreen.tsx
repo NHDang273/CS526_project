@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TextInput, Imag
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import Colors from '../../shared/colors';
 import { Dimensions } from 'react-native';
-import { id, writeProductData } from './hehe';
+import { writeProductData } from './hehe';
 
 const NewProductScreen = ({ navigation }) => {
     const [name, setName] = useState('');
@@ -17,7 +17,7 @@ const NewProductScreen = ({ navigation }) => {
     const screenWidth = Dimensions.get('window').width;
     const handleSave = () => {
         //Lưu và thoát ra
-        writeProductData(id, name, giaBan, giaNhap, IDNCC, moTa, tonKho, image);
+        writeProductData(name, giaBan, giaNhap, IDNCC, moTa, tonKho, image);
         navigation.goBack()
       };
     

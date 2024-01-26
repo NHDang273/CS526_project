@@ -26,29 +26,42 @@ function getProductLength() {
       return -1;
     });
 }
+// Kiem tra Product
+async function checkIfIdExists(id) {
+  const ProductRef = ref(db, '/__collections__/SanPham');
+  const snapshot = await get(child(ProductRef, `SanPham${id}`));
+
+  if (!snapshot.exists()) {
+    return id; // ID doesn't exist
+  } else {
+    return checkIfIdExists(id + 1); // Recursively check the next ID
+  }
+}
 
 // Ghi dữ liệu
-let Product;
-let id;
+let productId;
 
-function writeProductData(id, name, giaBan, giaNhap, IDNCC, moTa, tonKho, image) {
-  getProductLength().then((length) => {
-    if(length < 1)
-        Product = 1;
-    Product = length+1;
-    id = Product,
-    console.log('SanPham'+Product);
-    console.log('ID:'+id);
-    set(ref(db, `__collections__/SanPham/SanPham${Product}`), {
-      ID: id,
-      GiaBan: giaBan,
-      GiaNhap: giaNhap,
-      MoTa: moTa,
-      NhaCungCap: IDNCC,
-      TenSP: name,
-      TonKho: tonKho,
-      Image: image,
-    });
+async function writeProductData(name, giaBan, giaNhap, IDNCC, moTa, tonKho, image) {
+  const length = await getProductLength();
+  if (length < 0) {
+    productId = 1;
+  } else {
+    productId = length + 1;
+  }
+  console.log('Truoc'+productId);
+  const result = await checkIfIdExists(productId);
+  productId = result;
+  console.log('Sau'+productId);
+  console.log('ID:' + productId);
+  set(ref(db, `__collections__/SanPham/SanPham${productId}`), {
+    ID: productId,
+    GiaBan: giaBan,
+    GiaNhap: giaNhap,
+    MoTa: moTa,
+    NhaCungCap: IDNCC,
+    TenSP: name,
+    TonKho: tonKho,
+    Image: image,
   });
 }
 
@@ -67,7 +80,7 @@ function deleteProductData(ProductId) {
 
 // Sửa dữ liệu
 function setProductData(giaBan, giaNhap, name, moTa, IDNCC) {
-    set(ref(db, `__collections__/SanPham/SanPham${Product}`), {
+    set(ref(db, `__collections__/SanPham/SanPham${productId}`), {
         GiaBan: giaBan,
         GiaNhap: giaNhap,
         MoTa: moTa,
@@ -76,4 +89,4 @@ function setProductData(giaBan, giaNhap, name, moTa, IDNCC) {
     });
   }
 
-export { id, writeProductData, deleteProductData, setProductData };
+export { productId, writeProductData, deleteProductData, setProductData };

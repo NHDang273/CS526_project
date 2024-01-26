@@ -4,9 +4,10 @@ import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../shared/colors';
 import { Dimensions } from 'react-native';
 import { deleteProductData } from './hehe';
+import { getProductData } from './DataProduct';
 
 const DetailProductScreen = ({ navigation, route }) => {
-    const { product, iD } = route.params;
+    const { product, iD} = route.params;
     console.log(product);
     console.log(iD);
 
@@ -29,6 +30,8 @@ const DetailProductScreen = ({ navigation, route }) => {
               style: 'destructive',
               onPress: () => {
                 deleteProductData(iD);
+                
+                navigation.goBack();
               },
             },
           ],

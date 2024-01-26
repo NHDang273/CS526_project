@@ -8,6 +8,11 @@ import { getProductData } from './DataProduct';
 
 const ProductScreen = ({ navigation }) => {
   const [productData, setProductData] = useState([]);
+  const [reloadData, setReloadData] = useState(false);
+
+  const reload = () => {
+    setReloadData(!reloadData);
+  };
 
   useEffect(() => {
     getProductData()
@@ -17,7 +22,7 @@ const ProductScreen = ({ navigation }) => {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [reloadData]);
 
   const handleProductPress = (product) => {
     const index = productData.indexOf(product);
@@ -33,7 +38,6 @@ const ProductScreen = ({ navigation }) => {
   const gotoNewProductScreen = () => {
     navigation.navigate('NewProduct');
   };
-
     return (
         <SafeAreaView style={styles.container}>
         {/* Màn hình sản phầm */}
@@ -46,6 +50,16 @@ const ProductScreen = ({ navigation }) => {
                 name="plus-square"
                 size={20}
                 color={Colors.background}
+                />
+            </TouchableOpacity>
+        </View>
+        {/* nút reload */}
+        <View style={[{position:'relative', bottom: 20, left: 20,}]}>
+            <TouchableOpacity style={[styles.addButton, {backgroundColor:Colors.backgroundHome, height:150, width: 150}]} onPress={reload}>
+            <FontAwesome
+                name="refresh"
+                size={20}
+                color={Colors.backgroundHome}
                 />
             </TouchableOpacity>
         </View>
